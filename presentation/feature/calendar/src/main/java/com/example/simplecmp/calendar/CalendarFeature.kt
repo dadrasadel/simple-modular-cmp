@@ -1,4 +1,4 @@
-package com.example.simplecmp
+package com.example.simplecmp.calendar
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -30,7 +30,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import java.time.DayOfWeek
+import com.example.simplecmp.domain.CalendarMonthFactory
+import com.example.simplecmp.presentation.ui.AppTheme
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
@@ -38,20 +39,14 @@ import java.util.Locale
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SimpleCmpApp() {
+fun CalendarFeature() {
     val today = remember { LocalDate.now() }
-    var currentMonth by remember { mutableStateOf(YearMonth.from(today)) }
-    var selectedDay by remember { mutableStateOf(today) }
+    var currentMonth = remember { mutableStateOf(YearMonth.from(today)) }
+    var selectedDay = remember { mutableStateOf(today) }
 
-    val firstDay = currentMonth.atDay(1)
-    val daysInMonth = currentMonth.lengthOfMonth()
-    val firstWeekday = (firstDay.dayOfWeek.value + 6) % 7
-    val days = buildList {
-        repeat(firstWeekday) { add(null) }
-        for (day in 1..daysInMonth) add(currentMonth.atDay(day))
-    }
+    val month = CalendarMonthFactory.create(currentMonth.value)
 
-    MaterialTheme {
+    AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
@@ -71,12 +66,12 @@ fun SimpleCmpApp() {
                         .align(Alignment.TopCenter)
                 ) {
                     Text(
-                        text = "Simple CMP App",
+                        text = "simple modular cmp",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "A clean calendar-only starter.",
+                        text = "A modular calendar-only starter.",
                         style = MaterialTheme.typography.bodyLarge
                     )
 
@@ -90,10 +85,10 @@ fun SimpleCmpApp() {
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             MonthHeader(
-                                monthLabel = currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault()),
-                                year = currentMonth.year,
-                                onPrevious = { currentMonth = currentMonth.minusMonths(1) },
-                                onNext = { currentMonth = currentMonth.plusMonths(1) }
+                                monthLabel = month.yearMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+                                year = month.yearMonth.year,
+                                onPrevious = { currentMonth.value = currentMonth.value.minusMonths(1) },
+                                onNext = { currentMonth.value = currentMonth.value.plusMonths(1) }
                             )
 
                             WeekDaysRow()
@@ -103,17 +98,17 @@ fun SimpleCmpApp() {
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
-                                days.forEach { date ->
+                                month.days.forEach { date ->
                                     CalendarCell(
                                         date = date,
                                         isToday = date == today,
-                                        isSelected = date == selectedDay,
-                                        onClick = { if (date != null) selectedDay = date },
+                                        isSelected = date == selectedDay.value,
+                                        onClick = { if (date != null) selectedDay.value = date },
                                     )
                                 }
                             }
 
-                            SelectedDayCard(selectedDay = selectedDay)
+                            SelectedDayCard(selectedDay = selectedDay.value)
                         }
                     }
                 }
@@ -140,12 +135,8 @@ private fun MonthHeader(
         trailing = {
             RowFull(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                leading = {
-                    SmallNavButton(text = "‹", onClick = onPrevious)
-                },
-                trailing = {
-                    SmallNavButton(text = "›", onClick = onNext)
-                }
+                leading = { SmallNavButton(text = "‹", onClick = onPrevious) },
+                trailing = { SmallNavButton(text = "›", onClick = onNext) }
             )
         }
     )
@@ -166,7 +157,7 @@ private fun WeekDaysRow() {
         maxItemsInEachRow = 7,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        DayOfWeek.entries.forEach {
+        java.time.DayOfWeek.entries.forEach {
             Text(
                 text = it.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
                 modifier = Modifier.size(44.dp),

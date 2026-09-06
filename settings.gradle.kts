@@ -14,5 +14,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "simple-cmp-app"
+rootProject.name = "simple-modular-cmp"
 include(":app")
+include(":domain")
+include(":presentation:ui")
+include(":presentation:feature:calendar")
