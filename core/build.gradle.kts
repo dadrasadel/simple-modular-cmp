@@ -1,19 +1,14 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.composeCompiler)
 }
 
 android {
-    namespace = "com.example.simplecmp.presentation.ui"
+    namespace = "com.example.simplecmp.core"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     compileOptions {
@@ -27,10 +22,7 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
     implementation(project(":common"))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.coroutines.core)
 }

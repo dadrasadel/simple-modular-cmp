@@ -16,6 +16,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "simple-modular-cmp"
 include(":app")
+include(":common")
+include(":core")
 include(":domain")
 include(":presentation:ui")
 include(":presentation:feature:calendar")

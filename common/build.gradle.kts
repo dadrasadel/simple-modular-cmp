@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.simplecmp.domain"
+    namespace = "com.example.simplecmp.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -22,5 +22,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(libs.androidx.core.ktx)
 }

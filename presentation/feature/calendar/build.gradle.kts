@@ -29,6 +29,8 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(project(":domain"))
+    implementation(project(":core"))
+    implementation(project(":common"))
     implementation(project(":presentation:ui"))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)

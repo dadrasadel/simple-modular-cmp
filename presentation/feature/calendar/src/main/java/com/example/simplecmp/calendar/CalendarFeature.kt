@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.simplecmp.core.AppInfo
 import com.example.simplecmp.domain.CalendarMonthFactory
 import com.example.simplecmp.presentation.ui.AppTheme
 import java.time.LocalDate
@@ -66,7 +67,7 @@ fun CalendarFeature() {
                         .align(Alignment.TopCenter)
                 ) {
                     Text(
-                        text = "simple modular cmp",
+                        text = AppInfo.name,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
