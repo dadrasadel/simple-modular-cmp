@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -17,20 +15,15 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":common"))
-            implementation(project(":core:ui"))
-            implementation(libs.compose.runtime)
-            implementation(libs.compose.foundation)
-            implementation(libs.compose.material3)
-            implementation(libs.compose.ui)
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }
 
 android {
-    namespace = "com.example.simplecmp.presentation.ui"
+    namespace = "com.example.simplecmp.core.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
-    buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

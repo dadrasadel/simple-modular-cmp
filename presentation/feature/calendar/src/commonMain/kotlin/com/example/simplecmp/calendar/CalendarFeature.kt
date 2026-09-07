@@ -30,9 +30,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.simplecmp.core.AppInfo
+import com.example.simplecmp.core.data.local.LocalAppStore
+import com.example.simplecmp.core.data.model.AppModel
+import com.example.simplecmp.core.data.repository.AppRepository
+import com.example.simplecmp.core.ui.AppColor
+import com.example.simplecmp.core.ui.AppTheme
 import com.example.simplecmp.domain.CalendarMonthFactory
-import com.example.simplecmp.presentation.ui.AppTheme
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -45,8 +48,18 @@ fun CalendarFeature() {
     val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
     var currentMonth = remember { mutableStateOf(YearMonth.from(today)) }
     var selectedDay = remember { mutableStateOf(today) }
+    val localStore = remember { LocalAppStore() }
+    val repo = remember {
+        object : AppRepository {
+            override fun getApps(): List<AppModel> = listOf(
+                AppModel(id = "calendar", title = "Calendar")
+            )
+        }
+    }
 
     val month = CalendarMonthFactory.create(currentMonth.value)
+    localStore.put("selectedDay", selectedDay.value.toString())
+    val appCount = repo.getApps().size
 
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
@@ -55,7 +68,7 @@ fun CalendarFeature() {
                     .fillMaxSize()
                     .background(
                         Brush.linearGradient(
-                            colors = listOf(Color(0xFFF6F0E8), Color(0xFFE8F1FF))
+                            colors = listOf(AppColor.Background, Color(0xFFE8F1FF))
                         )
                     )
                     .padding(20.dp)
@@ -68,12 +81,12 @@ fun CalendarFeature() {
                         .align(Alignment.TopCenter)
                 ) {
                     Text(
-                        text = AppInfo.name,
+                        text = "simple modular cmp",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "A modular calendar-only starter.",
+                        text = "A modular calendar-only starter. Apps loaded: $appCount",
                         style = MaterialTheme.typography.bodyLarge
                     )
 
