@@ -16,8 +16,6 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common"))
-            implementation(project(":core:ui"))
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -27,7 +25,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.example.simplecmp.presentation.ui"
+    namespace = "com.example.simplecmp.core.ui"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig { minSdk = libs.versions.minSdk.get().toInt() }
     buildFeatures { compose = true }
