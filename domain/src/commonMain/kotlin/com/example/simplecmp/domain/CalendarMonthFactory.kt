@@ -1,7 +1,5 @@
 package com.example.simplecmp.domain
 
-import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.YearMonth
 
 object CalendarMonthFactory {
